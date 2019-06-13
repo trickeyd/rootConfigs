@@ -122,10 +122,10 @@ set statusline+=%=%l:%c
 set shiftwidth=4
 "  On pressing tab, insert 4 spaces
 set expandtab
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+nnoremap wj <C-W><C-J>
+nnoremap wk <C-W><C-K>
+nnoremap wl <C-W><C-L>
+nnoremap wh <C-W><C-H>
 
 filetype indent on
 
