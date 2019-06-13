@@ -159,22 +159,21 @@ hi Search ctermfg=Red
 nmap <CR> O<Esc> 
 nmap <C-CR> o<Esc>
 
-
 " ad paragraph up / down to shift- moveement keys
-map <S-j> }
-map <S-k> {
+nnoremap <S-j> }
+nnoremap <S-k> {
 
 " map ctrl j and k to top and bottom of page
-map <C-j> <S-l>
-map <C-k> <S-h>
+nnoremap <C-j> <S-l>
+nnoremap <C-k> <S-h>
 
 " beggining and end of line
-map <C-h> ^
-map <C-l> $
+nnoremap <C-h> ^
+nnoremap <C-l> $
 
 " begginging and end of word
-map <S-h> b 
-map <S-l> e
+nnoremap <S-h> b 
+nnoremap <S-l> e
 
 map nn :NERDTreeToggle <CR>
 
