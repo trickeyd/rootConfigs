@@ -11,6 +11,10 @@ sudo vim -c 'PluginInstall' -c 'qa!'
 cd ~/.vim/bundle/YouCompleteMe
 sudo python3 install.py --clangd-completer
 
+apt-get install silversearcher-ag
+
+curl -LO https://github.com/BurntSushi/ripgrep/releases/download/11.0.1/ripgrep_11.0.1_amd64.deb
+$ sudo dpkg -i ripgrep_11.0.1_amd64.deb
 
 # adds the grep stuff to .bash_profile -  the spaces are required.
 cat <<"EOF" >> ~/.bash_profile
