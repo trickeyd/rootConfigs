@@ -52,6 +52,25 @@ Plugin 'vim-syntastic/syntastic'
 
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
+
+let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+
+let g:syntastic_javascript_checkers = ['jshint']
+
+"jsetup syntastic eslinting
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_eslint_exe = 'npm run lint --'
+
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+
+
 let g:rg_command = '
   \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
   \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
@@ -66,23 +85,6 @@ let g:files_command = '
   \ -g "!{.git,node_modules,vendor}/*" '
 command! -bang -nargs=* P call fzf#vim#files('', fzf#vim#with_preview('up'), <bang>)
 nnoremap <C-P> :P<CR>
-
-let g:jsx_ext_required = 0 " Allow JSX in normal JS files
-
-let g:syntastic_javascript_checkers = ['jshint']
-
-"jsetup syntastic eslinting
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_javascript_eslint_exe = 'npm run lint --'
-
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -106,8 +108,6 @@ set tabstop=4
 vmap <Tab> >gv
 vmap <S-Tab> <gv
 
-
-
 " [buffer number] followed by filename:
 set statusline=[%n]\ %t
 " for Syntastic messages:
@@ -127,17 +127,19 @@ nnoremap wk <C-W><C-K>
 nnoremap wl <C-W><C-L>
 nnoremap wh <C-W><C-H>
 
+nnoremap 9 <C-o>
+nnoremap 0 <C-i>
+
 filetype indent on
 
 set nowrap
 set smartindent
 set autoindent
 
-" When I close a tab, remove the buffer
 set nohidden
 
 " This is totally awesome - remap jj to escape in insert mode.  You'll never type jj anyway, so it's great!
-inoremap jj <Esc>
+inoremap jj <Esc> 
 
 " Enable mouse support in console
 set mouse=a
@@ -175,8 +177,12 @@ nnoremap <C-l> $
 nnoremap <S-h> b 
 nnoremap <S-l> e
 
+noremap <c-s> :wa <CR>
+
 map nn :NERDTreeToggle <CR>
+map nf :NERDTreeFind <CR>
 
 " un-highlight on space
-map <space> :noh <CR>
+xnoremap <space> :noh <CR>
 
+set hidden
