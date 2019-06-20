@@ -69,22 +69,28 @@ let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_javascript_eslint_exe = 'npm run lint --'
 
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
-
+let g:fzf_layout = { 'down': '~80%' }
 
 let g:rg_command = '
-  \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
+  \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color=always
   \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
   \ -g "!{.git,node_modules,vendor}/*" '
 
-command! -bang -nargs=* F call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, fzf#vim#with_preview('up'), <bang>0)
-nnoremap <C-O> :F<CR>
+
+command! -bang -nargs=* F call fzf#vim#grep(
+    \ g:rg_command.shellescape(<q-args>), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'},'up:60%'), <bang>0
+    \ )
+
+nnoremap <C-P> :F<CR>
+inoremap <C-P> <Esc>:F<CR>
 
 let g:files_command = '
   \ files
   \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
   \ -g "!{.git,node_modules,vendor}/*" '
 command! -bang -nargs=* P call fzf#vim#files('', fzf#vim#with_preview('up'), <bang>)
-nnoremap <C-P> :P<CR>
+nnoremap <Space><Space> :P<CR>
+inoremap <Space><Space> <Esc>:P<CR>
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -133,6 +139,7 @@ nnoremap 0 <C-i>
 filetype indent on
 
 set nowrap
+set textwidth=0 
 set smartindent
 set autoindent
 
@@ -162,27 +169,47 @@ nmap <CR> O<Esc>
 nmap <C-CR> o<Esc>
 
 " ad paragraph up / down to shift- moveement keys
+vnoremap <S-j> }
+vnoremap <S-k> {
 nnoremap <S-j> }
 nnoremap <S-k> {
 
 " map ctrl j and k to top and bottom of page
+vnoremap <C-j> <S-l>
+vnoremap <C-k> <S-h>
 nnoremap <C-j> <S-l>
 nnoremap <C-k> <S-h>
 
 " beggining and end of line
+vnoremap <C-h> ^
+vnoremap <C-l> $
 nnoremap <C-h> ^
 nnoremap <C-l> $
 
 " begginging and end of word
+vnoremap <S-h> b 
+vnoremap <S-l> e
 nnoremap <S-h> b 
 nnoremap <S-l> e
 
-noremap <c-s> :wa <CR>
+" save
+noremap <c-s> :wa<CR>
+vnoremap <c-s> <C-c>:wa<CR>
+inoremap <c-s> <Esc>:wa<CR>
+
+" quit
+noremap <c-q> :q<CR>
+vnoremap <c-q> <C-c>:q<CR>
+inoremap <c-q> <Esc>:q<CR>
+
+inoremap <LeftMouse> <Esc><LeftMouse>
 
 map nn :NERDTreeToggle <CR>
 map nf :NERDTreeFind <CR>
 
 " un-highlight on space
-xnoremap <space> :noh <CR>
+"xnoremap <space> :noh <CR>
 
 set hidden
+set tags=./tags;,tags;
+
