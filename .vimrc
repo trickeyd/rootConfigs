@@ -77,9 +77,7 @@ let g:rg_command = '
   \ -g "!{.git,node_modules,vendor}/*" '
 
 
-command! -bang -nargs=* F call fzf#vim#grep(
-    \ g:rg_command.shellescape(<q-args>), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'},'up:60%'), <bang>0
-    \ )
+command! -bang -nargs=* F call fzf#vim#grep(g:rg_command.shellescape(<q-args>), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'},'up:60%'), <bang>0 )
 
 nnoremap <C-P> :F<CR>
 inoremap <C-P> <Esc>:F<CR>
@@ -89,8 +87,8 @@ let g:files_command = '
   \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
   \ -g "!{.git,node_modules,vendor}/*" '
 command! -bang -nargs=* P call fzf#vim#files('', fzf#vim#with_preview('up'), <bang>)
-nnoremap <Space><Space> :P<CR>
-inoremap <Space><Space> <Esc>:P<CR>
+nnoremap `` :P<CR>
+inoremap <S-Space><S-Space> <Esc>:P<CR>
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
