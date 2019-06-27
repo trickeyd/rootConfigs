@@ -220,6 +220,11 @@ map nn :NERDTreeToggle <CR>
 map nf :NERDTreeFocus <CR>
 map nff :NERDTreeFind <CR>
 
+noremap w<s-h> :vertical resize +10<CR>
+noremap w<s-l> :vertical resize -10<CR>
+noremap w<s-j> :resize -10<CR>
+noremap w<s-k> :resize +10<CR>
+
 " un-highlight on space
 "xnoremap <space> :noh <CR>
 
