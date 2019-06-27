@@ -76,11 +76,25 @@ let g:rg_command = '
   \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
   \ -g "!{.git,node_modules,vendor}/*" '
 
+function! s:get_visual_selection()
+  " Why is this not a built-in Vim script function?!
+  let [line_start, column_start] = getpos("'<")[1:2]
+  let [line_end, column_end] = getpos("'>")[1:2]
+  let lines = getline(line_start, line_end)
+  if len(lines) == 0
+    return ''
+  endif
+  let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+  let lines[0] = lines[0][column_start - 1:]
+    return join(lines, "\n")
+endfunction
 
-command! -bang -nargs=* F call fzf#vim#grep(g:rg_command.shellescape(<q-args>), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'},'up:60%'), <bang>0 )
+command! -bang -nargs=* FF call fzf#vim#grep(g:rg_command.shellescape(<q-args>), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4.. '},'up:60%'), <bang>0 )
+command! -bang -nargs=* F call fzf#vim#grep(g:rg_command.shellescape(<q-args>), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4.. -q '.shellescape(s:get_visual_selection())},'up:60%'), <bang>0 )
 
-nnoremap <C-P> :F<CR>
-inoremap <C-P> <Esc>:F<CR>
+nnoremap <C-P> :FF<CR>
+inoremap <C-P> <Esc> :FF<CR>
+vnoremap <C-P> <Esc>:F<CR>
 
 let g:files_command = '
   \ files
@@ -203,7 +217,8 @@ inoremap <c-q> <Esc>:q<CR>
 inoremap <LeftMouse> <Esc><LeftMouse>
 
 map nn :NERDTreeToggle <CR>
-map nf :NERDTreeFind <CR>
+map nf :NERDTreeFocus <CR>
+map nff :NERDTreeFind <CR>
 
 " un-highlight on space
 "xnoremap <space> :noh <CR>
