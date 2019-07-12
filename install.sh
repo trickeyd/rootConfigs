@@ -26,5 +26,17 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 bind -x '"\C-p": vim $(fzf);'
 
+# create bundle folder if it doesn't exist
+mkdir -p ~/.vim/bundle
+
+# Install and compile procvim.vim
+git clone https://github.com/Shougo/vimproc.vim.git ~/.vim/bundle/vimproc.vim
+pushd ~/.vim/bundle/vimproc.vim
+make
+popd
+
+# Install tsuquyomi
+git clone https://github.com/Quramy/tsuquyomi.git ~/.vim/bundle/tsuquyomi
+
 stty -ixon
 EOF

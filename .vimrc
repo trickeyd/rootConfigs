@@ -39,6 +39,9 @@ Plugin 'https://github.com/scrooloose/nerdtree.git'
 
 Plugin 'https://github.com/jistr/vim-nerdtree-tabs.git'
 
+Plugin 'https://github.com/leafgarland/typescript-vim.git'
+Plugin 'peitalin/vim-jsx-typescript'
+
 Plugin 'mxw/vim-jsx'
 
 Plugin 'pangloss/vim-javascript'
@@ -47,6 +50,8 @@ Plugin 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
 Plugin 'ternjs/tern_for_vim'
 
 Plugin 'othree/jspc.vim'
+
+Plugin 'nathanaelkane/vim-indent-guides'
 
 Plugin 'vim-syntastic/syntastic'
 
@@ -119,8 +124,8 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 "  NERDTreeToggle
-"  " show existing tab with 4 spaces width
-set tabstop=4
+"  " show existing tab with 2 spaces width
+set tabstop=2
 
 " enable tabbing selections
 vmap <Tab> >gv
@@ -136,9 +141,9 @@ set statusline+=%*
 set statusline+=%=%l:%c
 
 
-"  " when indenting with '>', use 4 spaces width
-set shiftwidth=4
-"  On pressing tab, insert 4 spaces
+"  " when indenting with '>', use 2 spaces width
+set shiftwidth=2
+"  On pressing tab, insert 2 spaces
 set expandtab
 nnoremap wj <C-W><C-J>
 nnoremap wk <C-W><C-K>
@@ -158,7 +163,7 @@ set autoindent
 set nohidden
 
 " This is totally awesome - remap jj to escape in insert mode.  You'll never type jj anyway, so it's great!
-inoremap jj <Esc> 
+inoremap jj <Esc>
 
 " Enable mouse support in console
 set mouse=a
@@ -177,7 +182,7 @@ hi SpellBad cterm=undercurl
 set hlsearch
 hi Search ctermbg=LightYellow
 hi Search ctermfg=Red
-nmap <CR> O<Esc> 
+nmap <CR> O<Esc>
 nmap <C-CR> o<Esc>
 
 " ad paragraph up / down to shift- moveement keys
@@ -199,9 +204,9 @@ nnoremap <C-h> ^
 nnoremap <C-l> $
 
 " begginging and end of word
-vnoremap <S-h> b 
+vnoremap <S-h> b
 vnoremap <S-l> e
-nnoremap <S-h> b 
+nnoremap <S-h> b
 nnoremap <S-l> e
 
 " save
@@ -225,9 +230,18 @@ noremap w<s-l> :vertical resize -10<CR>
 noremap w<s-j> :resize -10<CR>
 noremap w<s-k> :resize +10<CR>
 
+noremap <S-p><S-p> "*p
+inoremap <S-p><S-P> <Esc>"*p
+vnoremap <S-y><S-Y> "*y
+
 " un-highlight on space
 "xnoremap <space> :noh <CR>
 
 set hidden
 set tags=./tags;,tags;
-
+    
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=lightgrey ctermbg=234
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=236
+map ggg :IndentGuidesToggle<CR>
