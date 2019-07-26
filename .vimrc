@@ -1,9 +1,3 @@
-set number
-set nocompatible              " be iMproved, required
-set omnifunc=syntaxcomplete#Complete#Complete#Complete
-filetype off                  " required
-
-syntax on
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -78,7 +72,7 @@ let g:fzf_layout = { 'down': '~80%' }
 
 let g:rg_command = '
   \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color=always
-  \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
+  \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,ts,tsx,xml}"
   \ -g "!{.git,node_modules,vendor}/*" '
 
 function! s:get_visual_selection()
@@ -103,7 +97,7 @@ vnoremap <C-P> <Esc>:F<CR>
 
 let g:files_command = '
   \ files
-  \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
+  \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,ts,tsx,xml}"
   \ -g "!{.git,node_modules,vendor}/*" '
 command! -bang -nargs=* P call fzf#vim#files('', fzf#vim#with_preview('up'), <bang>)
 nnoremap `` :P<CR>
@@ -111,6 +105,13 @@ inoremap <S-Space><S-Space> <Esc>:P<CR>
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
+
+set number
+set nocompatible              " be iMproved, required
+set omnifunc=syntaxcomplete#Complete#Complete#Complete
+filetype off                  " required
+
+syntax on
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
@@ -163,7 +164,7 @@ set autoindent
 set nohidden
 
 " This is totally awesome - remap jj to escape in insert mode.  You'll never type jj anyway, so it's great!
-inoremap jj <Esc>
+" inoremap jj <Esc>
 
 " Enable mouse support in console
 set mouse=a
@@ -186,16 +187,16 @@ nmap <CR> O<Esc>
 nmap <C-CR> o<Esc>
 
 " ad paragraph up / down to shift- moveement keys
-vnoremap <S-j> }
-vnoremap <S-k> {
-nnoremap <S-j> }
-nnoremap <S-k> {
+vnoremap <S-j> 5j
+vnoremap <S-k> 5k
+nnoremap <S-j> 5j
+nnoremap <S-k> 5k
 
 " map ctrl j and k to top and bottom of page
-vnoremap <C-j> <S-l>
-vnoremap <C-k> <S-h>
-nnoremap <C-j> <S-l>
-nnoremap <C-k> <S-h>
+vnoremap <C-j> 15j
+vnoremap <C-k> 15k
+nnoremap <C-j> 15j
+nnoremap <C-k> 15k
 
 " beggining and end of line
 vnoremap <C-h> ^
@@ -232,10 +233,13 @@ noremap w<s-k> :resize +10<CR>
 
 noremap <S-p><S-p> "*p
 inoremap <S-p><S-P> <Esc>"*p
-vnoremap <S-y><S-Y> "*y
+vnoremap <S-Y><S-Y> "*
+vnoremap <S-X><S-X> "*d
 
 " un-highlight on space
-"xnoremap <space> :noh <CR>
+xnoremap <space> :noh <CR>
+noremap <space> :noh <CR>
+vnoremap <space> :noh <CR>
 
 set hidden
 set tags=./tags;,tags;
@@ -245,3 +249,7 @@ let g:indent_guides_auto_colors = 0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=lightgrey ctermbg=234
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=236
 map ggg :IndentGuidesToggle<CR>
+
+set backupdir=.backup/,~/.backup/,/tmp//
+set directory=.swp/,~/.swp/,/tmp//
+set undodir=.undo/,~/.undo/,/tmp//
