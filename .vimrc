@@ -181,8 +181,8 @@ set spell spelllang=en
 hi clear SpellBad
 hi SpellBad cterm=undercurl
 set hlsearch
-hi Search ctermbg=LightYellow
-hi Search ctermfg=Red
+hi Search ctermbg=LightBlue
+hi Search ctermfg=Black
 nmap <CR> O<Esc>
 nmap <C-CR> o<Esc>
 
@@ -233,7 +233,7 @@ noremap w<s-k> :resize +10<CR>
 
 noremap <S-p><S-p> "*p
 inoremap <S-p><S-P> <Esc>"*p
-vnoremap <S-Y><S-Y> "*
+vnoremap <S-Y><S-Y> "*y
 vnoremap <S-X><S-X> "*d
 
 " un-highlight on space
