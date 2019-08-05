@@ -241,6 +241,8 @@ xnoremap <space> :noh <CR>
 noremap <space> :noh <CR>
 vnoremap <space> :noh <CR>
 
+noremap gj J
+
 set hidden
 set tags=./tags;,tags;
     
