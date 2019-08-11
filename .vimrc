@@ -1,73 +1,30 @@
-
-" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-Plugin 'L9'
-" Git plugin not hosted on GitHub
-Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" !!! Plugin 'ascenator/L9', {'name': 'newL9'}
-
 Plugin 'SpellCheck'
 
-" Plugin 'http://github.com/ctrlpvim/ctrlp.vim.git'
-
 Plugin 'https://github.com/scrooloose/nerdtree.git'
+Plugin 'weynhamz/vim-plugin-minibufexpl'
 
-Plugin 'https://github.com/jistr/vim-nerdtree-tabs.git'
-
-Plugin 'https://github.com/leafgarland/typescript-vim.git'
+Plugin 'leafgarland/typescript-vim.git'
 Plugin 'peitalin/vim-jsx-typescript'
-
-Plugin 'mxw/vim-jsx'
-
-Plugin 'pangloss/vim-javascript'
-
+Plugin 'arithran/vim-delete-hidden-buffers'
+Plugin 'larsbs/vimterial_dark'
+Plugin 'Quramy/tsuquyomi'
 Plugin 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
-Plugin 'ternjs/tern_for_vim'
-
-Plugin 'othree/jspc.vim'
-
-Plugin 'nathanaelkane/vim-indent-guides'
-
 Plugin 'vim-syntastic/syntastic'
-
+Plugin 'nathanaelkane/vim-indent-guides'
+"Plugin 'mxw/vim-jsx'
+"Plugin 'pangloss/vim-javascript'
+"Plugin 'othree/jspc.vim'
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
+call vundle#end()            " required
 
-let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
-let g:syntastic_javascript_checkers = ['jshint']
 
-"jsetup syntastic eslinting
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_javascript_eslint_exe = 'npm run lint --'
 
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---    fzf setup    ---%%%%%%%%%%%%%%%%%%%%
 let g:fzf_layout = { 'down': '~80%' }
 
 let g:rg_command = '
@@ -91,61 +48,116 @@ endfunction
 command! -bang -nargs=* FF call fzf#vim#grep(g:rg_command.shellescape(<q-args>), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4.. '},'up:60%'), <bang>0 )
 command! -bang -nargs=* F call fzf#vim#grep(g:rg_command.shellescape(<q-args>), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4.. -q '.shellescape(s:get_visual_selection())},'up:60%'), <bang>0 )
 
-nnoremap <C-P> :FF<CR>
-inoremap <C-P> <Esc> :FF<CR>
-vnoremap <C-P> <Esc>:F<CR>
-
 let g:files_command = '
   \ files
   \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,ts,tsx,xml}"
   \ -g "!{.git,node_modules,vendor}/*" '
 command! -bang -nargs=* P call fzf#vim#files('', fzf#vim#with_preview('up'), <bang>)
+
+
+
+
+"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%--- code completion ---%%%%%%%%%%%%%%%%%%%%
+
+if !exists("g:ycm_semantic_triggers")
+  let g:ycm_semantic_triggers = {}
+   endif
+    let g:ycm_semantic_triggers['typescript'] = ['.']
+let g:tsuquyomi_javascript_support = 1 
+"set omnifunc=syntaxcomplete#Complete
+
+
+autocmd FileType typescript setlocal completeopt-=menu
+
+
+
+
+
+
+"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---    syntax      ---%%%%%%%%%%%%%%%%%%%%
+
+set number
+autocmd BufNewFile,BufRead *.ts,*.tsx,*.jsx,*.js set filetype=typescript.tsx
+syntax on
+
+set nowrap
+set textwidth=0 
+"set smartindent
+"set autoindent
+
+
+hi clear SpellBad
+hi SpellBad cterm=underline
+set hlsearch
+hi Search ctermbg=LightBlue
+hi Search ctermfg=Black
+set spelllang=en
+
+
+
+"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---    skining     ---%%%%%%%%%%%%%%%%%%%%
+
+set tabstop=2
+
+hi tsxTag guifg=#E06C75 ctermfg=DarkRed
+hi tsxTagName guifg=#E06C75 ctermfg=Red
+hi tsxOpenTag guifg=#E06C75 ctermfg=DarkRed
+hi tsxCloseString guifg=#F99575 ctermfg=DarkRed
+hi tsxCloseTag guifg=#F99575 ctermfg=DarkRed
+hi tsxAttributeBraces guifg=#F99575 ctermfg=166
+hi tsxEqual guifg=#F99575 ctermfg=166
+hi tsxAttrib guifg=#F8BD7F ctermfg=214
+hi ReactState guifg=#C176A7 ctermfg=99
+hi ReactProps guifg=#D19A66 ctermfg=99
+
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=lightgrey ctermbg=234
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=236
+
+
+
+
+
+"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---     misc.      ---%%%%%%%%%%%%%%%%%%%%
+
+
+filetype plugin indent on 
+filetype plugin on
+filetype indent on
+set mouse=a
+set showcmd
+set nocompatible
+set shiftwidth=2
+set expandtab
+set hidden
+set tags=./tags;,tags;
+
+
+
+
+
+"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---  key mappings  ---%%%%%%%%%%%%%%%%%%%%
+
+" map fzf
+nnoremap <C-P> :FF<CR>
+inoremap <C-P> <Esc> :FF<CR>
+vnoremap <C-P> <Esc>:F<CR>
+
 nnoremap `` :P<CR>
 inoremap <S-Space><S-Space> <Esc>:P<CR>
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
+" move between tabs
+nnoremap = :bn<cr>
+nnoremap - :bp<cr>
 
-set number
-set nocompatible              " be iMproved, required
-set omnifunc=syntaxcomplete#Complete#Complete#Complete
-filetype off                  " required
 
-syntax on
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-"  NERDTreeToggle
-"  " show existing tab with 2 spaces width
-set tabstop=2
 
 " enable tabbing selections
 vmap <Tab> >gv
 vmap <S-Tab> <gv
 
-" [buffer number] followed by filename:
-set statusline=[%n]\ %t
-" for Syntastic messages:
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-" show line#:column# on the right hand side
-set statusline+=%=%l:%c
 
-
-"  " when indenting with '>', use 2 spaces width
-set shiftwidth=2
-"  On pressing tab, insert 2 spaces
-set expandtab
 nnoremap wj <C-W><C-J>
 nnoremap wk <C-W><C-K>
 nnoremap wl <C-W><C-L>
@@ -154,35 +166,6 @@ nnoremap wh <C-W><C-H>
 nnoremap 9 <C-o>
 nnoremap 0 <C-i>
 
-filetype indent on
-
-set nowrap
-set textwidth=0 
-set smartindent
-set autoindent
-
-set nohidden
-
-" This is totally awesome - remap jj to escape in insert mode.  You'll never type jj anyway, so it's great!
-" inoremap jj <Esc>
-
-" Enable mouse support in console
-set mouse=a
-
-" This shows what you are typing as a command. I love this!
-set showcmd
-
-" Necesary  for lots of cool vim things
-set nocompatible
-
-set spell spelllang=en
-" set highlight color
-
-hi clear SpellBad
-hi SpellBad cterm=undercurl
-set hlsearch
-hi Search ctermbg=LightBlue
-hi Search ctermfg=Black
 nmap <CR> O<Esc>
 nmap <C-CR> o<Esc>
 
@@ -210,10 +193,13 @@ vnoremap <S-l> e
 nnoremap <S-h> b
 nnoremap <S-l> e
 
-" save
-noremap <c-s> :wa<CR>
+noremap <c-s> :wa<CR> 
 vnoremap <c-s> <C-c>:wa<CR>
 inoremap <c-s> <Esc>:wa<CR>
+
+noremap <c-w> :DeleteHiddenBuffers<CR> 
+vnoremap <c-w> :DeleteHiddenBuffers<CR>
+inoremap <c-w> :DeleteHiddenBuffers<CR>
 
 " quit
 noremap <c-q> :q<CR>
@@ -226,15 +212,13 @@ map nn :NERDTreeToggle <CR>
 map nf :NERDTreeFocus <CR>
 map nff :NERDTreeFind <CR>
 
-noremap w<s-h> :vertical resize +10<CR>
-noremap w<s-l> :vertical resize -10<CR>
-noremap w<s-j> :resize -10<CR>
-noremap w<s-k> :resize +10<CR>
+noremap + :vertical resize +10<CR> <bar> :resize +10<CR>
+noremap _ :vertical resize -10<CR> <bar> :resize -10<CR>
 
-noremap <S-p><S-p> "*p
-inoremap <S-p><S-P> <Esc>"*p
-vnoremap <S-Y><S-Y> "*y
-vnoremap <S-X><S-X> "*d
+noremap √ "*p
+inoremap √ <esc>"*pa
+vnoremap ç "*y
+vnoremap ≈ "*d
 
 " un-highlight on space
 xnoremap <space> :noh <CR>
@@ -243,15 +227,9 @@ vnoremap <space> :noh <CR>
 
 noremap gj J
 
-set hidden
-set tags=./tags;,tags;
-    
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=lightgrey ctermbg=234
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=236
 map ggg :IndentGuidesToggle<CR>
 
 set backupdir=.backup/,~/.backup/,/tmp//
 set directory=.swp/,~/.swp/,/tmp//
 set undodir=.undo/,~/.undo/,/tmp//
+
