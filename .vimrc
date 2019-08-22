@@ -97,6 +97,7 @@ set spelllang=en
 
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---    skining     ---%%%%%%%%%%%%%%%%%%%%
 
+set sidescroll=1
 set tabstop=2
 
 hi tsxTag guifg=#E06C75 ctermfg=DarkRed
@@ -212,18 +213,23 @@ map nn :NERDTreeToggle <CR>
 map nf :NERDTreeFocus <CR>
 map nff :NERDTreeFind <CR>
 
-noremap + :vertical resize +10<CR> <bar> :resize +10<CR>
-noremap _ :vertical resize -10<CR> <bar> :resize -10<CR>
+noremap + :vertical resize +10<CR> 
+noremap ) :resize +10<CR>
+noremap _ :vertical resize -10<CR>
+noremap ( :resize -10<CR>
 
-noremap √ "*p
-inoremap √ <esc>"*pa
+noremap √ "*P
+inoremap √ <esc>"*Pa
 vnoremap ç "*y
 vnoremap ≈ "*d
 
 " un-highlight on space
 xnoremap <space> :noh <CR>
 noremap <space> :noh <CR>
-vnoremap <space> :noh <CR>
+vnoremap <space> :noh CR>
+
+inoremap <S-L><S-K><S-J> console.log("
+noremap <S-L><S-K><S-J> iconsole.log("
 
 noremap gj J
 
