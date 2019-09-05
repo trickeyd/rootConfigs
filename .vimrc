@@ -46,7 +46,15 @@ function! s:get_visual_selection()
 endfunction
 
 command! -bang -nargs=* FF call fzf#vim#grep(g:rg_command.shellescape(<q-args>), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4.. '},'up:60%'), <bang>0 )
-command! -bang -nargs=* F call fzf#vim#grep(g:rg_command.shellescape(<q-args>), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4.. -q '.shellescape(s:get_visual_selection())},'up:60%'), <bang>0 )
+
+function! s:close_nerd_and_search_with_selection(args, bang)
+  let selection = s:get_visual_selection()
+  echo selection
+  :NERDTreeClose 
+  call fzf#vim#grep(g:rg_command.shellescape(a:args), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4.. -q '.shellescape(selection)},'up:60%'), a:bang )
+endfunction 
+
+command! -bang -nargs=* CC call <SID>close_nerd_and_search_with_selection(<q-args>, <bang>0 )
 
 let g:files_command = '
   \ files
@@ -141,12 +149,12 @@ set tags=./tags;,tags;
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---  key mappings  ---%%%%%%%%%%%%%%%%%%%%
 
 " map fzf
-nnoremap <C-P> :FF<CR>
-inoremap <C-P> <Esc> :FF<CR>
-vnoremap <C-P> <Esc>:F<CR>
+nnoremap <C-P> :NERDTreeClose<bar>:FF<CR>
+inoremap <C-P> :NERDTreeClose<bar><Esc>:FF<CR>
+vnoremap <C-P> <Esc>:CC<CR>
 
-nnoremap `` :P<CR>
-inoremap <S-Space><S-Space> <Esc>:P<CR>
+
+nnoremap `` :NERDTreeClose<bar>:P<CR>
 
 " move between tabs
 nnoremap = :bn<cr>
@@ -163,6 +171,10 @@ nnoremap wj <C-W><C-J>
 nnoremap wk <C-W><C-K>
 nnoremap wl <C-W><C-L>
 nnoremap wh <C-W><C-H>
+nnoremap w<s-j> <C-W><S-J>
+nnoremap w<s-k> <C-W><S-K>
+nnoremap w<s-l> <C-W><S-L>
+nnoremap w<s-h> <C-W><S-H>
 
 nnoremap 9 <C-o>
 nnoremap 0 <C-i>
@@ -198,9 +210,17 @@ noremap <c-s> :wa<CR>
 vnoremap <c-s> <C-c>:wa<CR>
 inoremap <c-s> <Esc>:wa<CR>
 
-noremap <c-w> :DeleteHiddenBuffers<CR> 
-vnoremap <c-w> :DeleteHiddenBuffers<CR>
-inoremap <c-w> :DeleteHiddenBuffers<CR>
+noremap <c-w><c-w> :DeleteHiddenBuffers<CR> 
+vnoremap <c-w><c-w> :DeleteHiddenBuffers<CR>
+inoremap <c-w><c-w> :DeleteHiddenBuffers<CR>
+
+noremap <c-w> :MBEbd<CR> 
+vnoremap <c-w> :MBEbd<CR>
+inoremap <c-w> :MBEbd<CR>
+
+noremap <c-t><c-t> :MBEToggleAll<CR> 
+vnoremap <c-t><c-t> :MBEToggleAll<CR>
+inoremap <c-t><c-t> :MBEToggleAll<CR>
 
 " quit
 noremap <c-q> :q<CR>
@@ -228,8 +248,8 @@ xnoremap <space> :noh <CR>
 noremap <space> :noh <CR>
 vnoremap <space> :noh CR>
 
-inoremap <S-L><S-K><S-J> console.log("
-noremap <S-L><S-K><S-J> iconsole.log("
+inoremap <S-P><S-O><S-I> console.log("
+noremap <S-P><S-O><S-I> iconsole.log("
 
 noremap gj J
 
