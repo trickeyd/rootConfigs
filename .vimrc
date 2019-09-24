@@ -97,7 +97,7 @@ set textwidth=0
 hi clear SpellBad
 hi SpellBad cterm=underline
 set hlsearch
-hi Search ctermbg=LightBlue
+hi Search ctermbg=Red
 hi Search ctermfg=Black
 set spelllang=en
 
@@ -239,9 +239,13 @@ noremap _ :vertical resize -10<CR>
 noremap ( :resize -10<CR>
 
 noremap √ "*P
-inoremap √ <esc>"*Pa
+inoremap √ <esc>l"*Pa
 vnoremap ç "*y
 vnoremap ≈ "*d
+
+" search selection in visual
+vnoremap * y/<C-R>"<CR>)
+
 
 " un-highlight on space
 xnoremap <space> :noh <CR>
