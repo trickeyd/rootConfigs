@@ -1,7 +1,10 @@
+filetype off
+
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'SpellCheck'
+Plugin 'kamykn/CCSpellCheck.vim'
 
 Plugin 'https://github.com/scrooloose/nerdtree.git'
 Plugin 'weynhamz/vim-plugin-minibufexpl'
@@ -13,6 +16,7 @@ Plugin 'larsbs/vimterial_dark'
 Plugin 'Quramy/tsuquyomi'
 Plugin 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
 Plugin 'vim-syntastic/syntastic'
+Plugin 'jason0x43/vim-js-indent' 
 Plugin 'nathanaelkane/vim-indent-guides'
 "Plugin 'mxw/vim-jsx'
 "Plugin 'pangloss/vim-javascript'
@@ -30,7 +34,7 @@ let g:fzf_layout = { 'down': '~80%' }
 let g:rg_command = '
   \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color=always
   \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,ts,tsx,xml}"
-  \ -g "!{.git,node_modules,vendor}/*" '
+  \ -g "!{.git,node_modules,artifacts,vendor}/*" '
 
 function! s:get_visual_selection()
   " Why is this not a built-in Vim script function?!
@@ -59,7 +63,7 @@ command! -bang -nargs=* CC call <SID>close_nerd_and_search_with_selection(<q-arg
 let g:files_command = '
   \ files
   \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,ts,tsx,xml}"
-  \ -g "!{.git,node_modules,vendor}/*" '
+  \ -g "!{.git,node_modules,artifacts,vendor}/*" '
 command! -bang -nargs=* P call fzf#vim#files('', fzf#vim#with_preview('up'), <bang>)
 
 
@@ -86,12 +90,16 @@ autocmd FileType typescript setlocal completeopt-=menu
 
 set number
 autocmd BufNewFile,BufRead *.ts,*.tsx,*.jsx,*.js set filetype=typescript.tsx
-syntax on
+
 
 set nowrap
 set textwidth=0 
 "set smartindent
 "set autoindent
+set cindent
+filetype plugin indent on
+set cinkeys-=0#
+set indentkeys-=0# 
 
 
 hi clear SpellBad
@@ -104,7 +112,13 @@ set spelllang=en
 
 
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---    skining     ---%%%%%%%%%%%%%%%%%%%%
+set cursorline 
+set cursorcolumn 
+"hi Cursor ctermbg=15 ctermfg=8 
+hi CursorLine cterm=none term=none  ctermbg=234 ctermfg=none 
+hi CursorColumn cterm=none term=none  ctermbg=234 ctermfg=none 
 
+syntax on 
 set sidescroll=1
 set tabstop=2
 
@@ -124,7 +138,20 @@ let g:indent_guides_auto_colors = 0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=lightgrey ctermbg=234
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=236
 
+" MiniBufExpl Colors
+hi MBENormal               guifg=#808080 ctermfg=218
+hi MBEChanged              guifg=#CD5907 ctermfg=218
+hi MBEVisibleNormal        guifg=#5DC2D6 ctermfg=208
+hi MBEVisibleChanged       guifg=#F1266F ctermfg=208
+hi MBEVisibleActiveNormal  guifg=#A6DB29 ctermfg=226 ctermbg=233 
+hi MBEVisibleActiveChanged guifg=#F1266F ctermfg=226
 
+hi Normal ctermfg=248 ctermbg=233
+highlight NonText ctermfg=234 ctermbg=234 
+hi VertSplit ctermfg=232  ctermbg=232
+hi LineNr ctermfg=15 ctermbg=232
+hi StatusLine ctermfg=145  ctermbg=232
+hi StatusLineNC ctermfg=232  ctermbg=231  
 
 
 
@@ -135,6 +162,7 @@ filetype plugin indent on
 filetype plugin on
 filetype indent on
 set mouse=a
+set ttymouse=sgr 
 set showcmd
 set nocompatible
 set shiftwidth=2
@@ -143,7 +171,16 @@ set hidden
 set tags=./tags;,tags;
 
 
-
+" Use CCSpellCheck.vim. (1 / 0) (default 1)
+let g:CCSpellCheckEnable = 1
+" Setting for start checking min length of character. (default 4)
+let g:CCSpellCheckMinCharacterLength = 4
+" Setting for max suggest words list length. (default 50)
+let g:CCSpellCheckMaxSuggestWords = 50
+" Override highlight group name. (default 'CCSpellBad')
+let g:CCSpellCheckMatchGroupName = 'CCSpellBad'
+" Override highlight setting.
+highlight CCSpellBad cterm=reverse ctermfg=magenta gui=reverse guifg=magenta
 
 
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---  key mappings  ---%%%%%%%%%%%%%%%%%%%%
@@ -239,7 +276,7 @@ noremap _ :vertical resize -10<CR>
 noremap ( :resize -10<CR>
 
 noremap √ "*P
-inoremap √ <esc>l"*Pa
+inoremap √ <space><esc>"*Pa
 vnoremap ç "*y
 vnoremap ≈ "*d
 
@@ -252,6 +289,8 @@ xnoremap <space> :noh <CR>
 noremap <space> :noh <CR>
 vnoremap <space> :noh CR>
 
+
+
 inoremap <S-P><S-O><S-I> console.log("
 noremap <S-P><S-O><S-I> iconsole.log("
 
@@ -262,4 +301,5 @@ map ggg :IndentGuidesToggle<CR>
 set backupdir=.backup/,~/.backup/,/tmp//
 set directory=.swp/,~/.swp/,/tmp//
 set undodir=.undo/,~/.undo/,/tmp//
+
 
