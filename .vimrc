@@ -7,7 +7,9 @@ Plugin 'SpellCheck'
 Plugin 'kamykn/CCSpellCheck.vim'
 
 Plugin 'https://github.com/scrooloose/nerdtree.git'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'weynhamz/vim-plugin-minibufexpl'
+Plugin 'tpope/vim-fugitive.git' 
 
 Plugin 'leafgarland/typescript-vim.git'
 Plugin 'peitalin/vim-jsx-typescript'
@@ -138,16 +140,9 @@ let g:indent_guides_auto_colors = 0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=lightgrey ctermbg=234
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=236
 
-" MiniBufExpl Colors
-hi MBENormal               guifg=#808080 ctermfg=218
-hi MBEChanged              guifg=#CD5907 ctermfg=218
-hi MBEVisibleNormal        guifg=#5DC2D6 ctermfg=208
-hi MBEVisibleChanged       guifg=#F1266F ctermfg=208
-hi MBEVisibleActiveNormal  guifg=#A6DB29 ctermfg=226 ctermbg=233 
-hi MBEVisibleActiveChanged guifg=#F1266F ctermfg=226
 
 hi Normal ctermfg=248 ctermbg=233
-highlight NonText ctermfg=234 ctermbg=234 
+highlight NonText ctermfg=232 ctermbg=232 
 hi VertSplit ctermfg=232  ctermbg=232
 hi LineNr ctermfg=15 ctermbg=232
 hi StatusLine ctermfg=145  ctermbg=232
@@ -155,6 +150,13 @@ hi StatusLineNC ctermfg=232  ctermbg=231
 
 
 
+" MiniBufExpl Colors
+hi MBENormal               guifg=#808080 ctermfg=218
+hi MBEChanged              guifg=#CD5907 ctermfg=218
+hi MBEVisibleNormal        guifg=#5DC2D6 ctermfg=208
+hi MBEVisibleChanged       guifg=#F1266F ctermfg=208
+hi MBEVisibleActiveNormal  guifg=#A6DB29 ctermfg=226
+hi MBEVisibleActiveChanged guifg=#F1266F ctermfg=226
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---     misc.      ---%%%%%%%%%%%%%%%%%%%%
 
 
@@ -180,8 +182,12 @@ let g:CCSpellCheckMaxSuggestWords = 50
 " Override highlight group name. (default 'CCSpellBad')
 let g:CCSpellCheckMatchGroupName = 'CCSpellBad'
 " Override highlight setting.
-highlight CCSpellBad cterm=reverse ctermfg=magenta gui=reverse guifg=magenta
+highlight CCSpellBad cterm=underline 
 
+let g:miniBufExplMapWindowNavVim = 1
+let g:miniBufExplMapWindowNavArrows = 1
+let g:miniBufExplMapCTabSwitchBufs = 1
+let g:miniBufExplModSelTarget = 1 
 
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---  key mappings  ---%%%%%%%%%%%%%%%%%%%%
 
@@ -302,4 +308,5 @@ set backupdir=.backup/,~/.backup/,/tmp//
 set directory=.swp/,~/.swp/,/tmp//
 set undodir=.undo/,~/.undo/,/tmp//
 
+noremap gi :TsuImport<CR>
 
