@@ -8,13 +8,13 @@ Plugin 'kamykn/CCSpellCheck.vim'
 
 Plugin 'https://github.com/scrooloose/nerdtree.git'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'weynhamz/vim-plugin-minibufexpl'
+"Plugin 'weynhamz/vim-plugin-minibufexpl'
+Plugin 'jlanzarotta/bufexplorer' 
 Plugin 'tpope/vim-fugitive.git' 
 
 Plugin 'leafgarland/typescript-vim.git'
 Plugin 'peitalin/vim-jsx-typescript'
 Plugin 'arithran/vim-delete-hidden-buffers'
-Plugin 'larsbs/vimterial_dark'
 Plugin 'Quramy/tsuquyomi'
 Plugin 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
 Plugin 'vim-syntastic/syntastic'
@@ -36,7 +36,7 @@ let g:fzf_layout = { 'down': '~80%' }
 let g:rg_command = '
   \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color=always
   \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,ts,tsx,xml}"
-  \ -g "!{.git,node_modules,artifacts,vendor}/*" '
+  \ -g "!{.git,node_modules,*/node_modules,artifacts,vendor}/*" '
 
 function! s:get_visual_selection()
   " Why is this not a built-in Vim script function?!
@@ -83,8 +83,8 @@ let g:tsuquyomi_javascript_support = 1
 
 autocmd FileType typescript setlocal completeopt-=menu
 
-
-
+" remove preview window
+set completeopt-=preview
 
 
 
@@ -111,14 +111,25 @@ hi Search ctermbg=Red
 hi Search ctermfg=Black
 set spelllang=en
 
+augroup vimrc
+ autocmd!
+ autocmd BufWinEnter,Syntax * syn sync minlines=500 maxlines=500
+augroup END 
+
+let g:typescript_indent_disable = 1 
+set backspace=indent,eol,start 
+
 
 
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---    skining     ---%%%%%%%%%%%%%%%%%%%%
 set cursorline 
-set cursorcolumn 
-"hi Cursor ctermbg=15 ctermfg=8 
+"set cursorcolumn 
+hi Cursor ctermbg=15 ctermfg=8 
 hi CursorLine cterm=none term=none  ctermbg=234 ctermfg=none 
 hi CursorColumn cterm=none term=none  ctermbg=234 ctermfg=none 
+set lazyredraw
+set ttyfast
+:set cul! 
 
 syntax on 
 set sidescroll=1
@@ -144,19 +155,21 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=236
 hi Normal ctermfg=248 ctermbg=233
 highlight NonText ctermfg=232 ctermbg=232 
 hi VertSplit ctermfg=232  ctermbg=232
-hi LineNr ctermfg=15 ctermbg=232
+hi LineNr ctermfg=15 ctermbg=233
 hi StatusLine ctermfg=145  ctermbg=232
-hi StatusLineNC ctermfg=232  ctermbg=231  
+hi StatusLineNC ctermfg=235 ctermbg=231  
 
+" color of opposite bracket
+hi matchparen cterm=underline ctermbg=black ctermfg=red 
 
 
 " MiniBufExpl Colors
-hi MBENormal               guifg=#808080 ctermfg=218
-hi MBEChanged              guifg=#CD5907 ctermfg=218
-hi MBEVisibleNormal        guifg=#5DC2D6 ctermfg=208
-hi MBEVisibleChanged       guifg=#F1266F ctermfg=208
-hi MBEVisibleActiveNormal  guifg=#A6DB29 ctermfg=226
-hi MBEVisibleActiveChanged guifg=#F1266F ctermfg=226
+"hi MBENormal               guifg=#808080 ctermfg=218
+"hi MBEChanged              guifg=#CD5907 ctermfg=218
+"hi MBEVisibleNormal        guifg=#5DC2D6 ctermfg=208
+"hi MBEVisibleChanged       guifg=#F1266F ctermfg=208
+"hi MBEVisibleActiveNormal  guifg=#A6DB29 ctermfg=226
+"hi MBEVisibleActiveChanged guifg=#F1266F ctermfg=226
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---     misc.      ---%%%%%%%%%%%%%%%%%%%%
 
 
@@ -184,10 +197,17 @@ let g:CCSpellCheckMatchGroupName = 'CCSpellBad'
 " Override highlight setting.
 highlight CCSpellBad cterm=underline 
 
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplModSelTarget = 1 
+"let g:miniBufExplMapWindowNavVim = 1
+"let g:miniBufExplMapWindowNavArrows = 1
+"let g:miniBufExplMapCTabSwitchBufs = 1
+"let g:miniBufExplModSelTarget = 1 
+
+let g:tsuquyomi_javascript_support = 1
+let g:tsuquyomi_auto_open = 1
+let g:tsuquyomi_completion_detail = 1 
+let g:tsuquyomi_disable_quickfix = 1
+ 
+
 
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---  key mappings  ---%%%%%%%%%%%%%%%%%%%%
 
@@ -200,14 +220,17 @@ vnoremap <C-P> <Esc>:CC<CR>
 nnoremap `` :NERDTreeClose<bar>:P<CR>
 
 " move between tabs
-nnoremap = :bn<cr>
-nnoremap - :bp<cr>
-
+"nnoremap = :bn<cr>
+"nnoremap - :bp<cr>
 
 
 " enable tabbing selections
-vmap <Tab> >gv
-vmap <S-Tab> <gv
+nnoremap <Tab> <S-v>>gv<Esc>h 
+nnoremap <S-Tab> <S-v><gv<Esc>h 
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+inoremap <S-Tab> <space><Esc>x<S-v><gv<Esc>i
+ 
 
 
 nnoremap wj <C-W><C-J>
@@ -218,6 +241,11 @@ nnoremap w<s-j> <C-W><S-J>
 nnoremap w<s-k> <C-W><S-K>
 nnoremap w<s-l> <C-W><S-L>
 nnoremap w<s-h> <C-W><S-H>
+
+set splitbelow
+set splitright 
+nnoremap w- :split<CR>
+nnoremap w_ :vsplit<CR>
 
 nnoremap 9 <C-o>
 nnoremap 0 <C-i>
@@ -293,7 +321,7 @@ vnoremap * y/<C-R>"<CR>)
 " un-highlight on space
 xnoremap <space> :noh <CR>
 noremap <space> :noh <CR>
-vnoremap <space> :noh CR>
+vnoremap <space> :noh <CR>
 
 
 
