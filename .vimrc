@@ -265,6 +265,17 @@ vnoremap <C-k> 15k
 nnoremap <C-j> 15j
 nnoremap <C-k> 15k
 
+" this is because i ovverride my system default to 
+" use arrow keys when i use control hjkl
+nmap <up> <c-k> 
+vmap <up> <c-k>
+nmap <down> <c-j> 
+vmap <down> <c-j>
+nmap <left> <c-h> 
+vmap <left> <c-h>
+nmap <right> <c-l> 
+vmap <right> <c-l>
+
 " beggining and end of line
 vnoremap <C-h> ^
 vnoremap <C-l> $
@@ -322,8 +333,6 @@ vnoremap * y/<C-R>"<CR>)
 xnoremap <space> :noh <CR>
 noremap <space> :noh <CR>
 vnoremap <space> :noh <CR>
-
-
 
 inoremap <S-P><S-O><S-I> console.log("
 noremap <S-P><S-O><S-I> iconsole.log("
