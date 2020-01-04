@@ -276,6 +276,12 @@ vmap <left> <c-h>
 nmap <right> <c-l> 
 vmap <right> <c-l>
 
+" buffer keys
+nnoremap <silent> ww :ToggleBufExplorer<CR>
+nnoremap <silent> ws :BufExplorerHorizontalSplit<CR>
+nnoremap <silent> wv :BufExplorerVerticalSplit<CR> 
+
+
 " beggining and end of line
 vnoremap <C-h> ^
 vnoremap <C-l> $
@@ -295,14 +301,6 @@ inoremap <c-s> <Esc>:wa<CR>
 noremap <c-w><c-w> :DeleteHiddenBuffers<CR> 
 vnoremap <c-w><c-w> :DeleteHiddenBuffers<CR>
 inoremap <c-w><c-w> :DeleteHiddenBuffers<CR>
-
-noremap <c-w> :MBEbd<CR> 
-vnoremap <c-w> :MBEbd<CR>
-inoremap <c-w> :MBEbd<CR>
-
-noremap <c-t><c-t> :MBEToggleAll<CR> 
-vnoremap <c-t><c-t> :MBEToggleAll<CR>
-inoremap <c-t><c-t> :MBEToggleAll<CR>
 
 " quit
 noremap <c-q> :q<CR>
