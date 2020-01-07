@@ -3,8 +3,11 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'SpellCheck'
-Plugin 'kamykn/CCSpellCheck.vim'
+"Plugin 'SpellCheck'
+"Plugin 'kamykn/CCSpellCheck.vim'
+"
+"Spelling
+Plugin 'kamykn/spelunker.vim'
 
 Plugin 'https://github.com/scrooloose/nerdtree.git'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
@@ -36,7 +39,7 @@ let g:fzf_layout = { 'down': '~80%' }
 let g:rg_command = '
   \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color=always
   \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,ts,tsx,xml}"
-  \ -g "!{.git,node_modules,*/node_modules,artifacts,vendor}/*" '
+  \ -g "!{.git,lib,node_modules,*/node_modules,artifacts,vendor}/*" '
 
 function! s:get_visual_selection()
   " Why is this not a built-in Vim script function?!
@@ -62,10 +65,6 @@ endfunction
 
 command! -bang -nargs=* CC call <SID>close_nerd_and_search_with_selection(<q-args>, <bang>0 )
 
-let g:files_command = '
-  \ files
-  \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,ts,tsx,xml}"
-  \ -g "!{.git,node_modules,artifacts,vendor}/*" '
 command! -bang -nargs=* P call fzf#vim#files('', fzf#vim#with_preview('up'), <bang>)
 
 
@@ -110,6 +109,7 @@ set hlsearch
 hi Search ctermbg=Red
 hi Search ctermfg=Black
 set spelllang=en
+set nospell 
 
 augroup vimrc
  autocmd!
@@ -162,6 +162,8 @@ hi StatusLineNC ctermfg=235 ctermbg=231
 " color of opposite bracket
 hi matchparen cterm=underline ctermbg=black ctermfg=red 
 
+hi SpelunkerSpellBad cterm=underline ctermfg=none gui=underline guifg=#9e9e9e
+hi SpelunkerComplexOrCompoundWord cterm=underline ctermfg=none gui=underline guifg=NONE 
 
 " MiniBufExpl Colors
 "hi MBENormal               guifg=#808080 ctermfg=218
