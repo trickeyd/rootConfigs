@@ -11,7 +11,6 @@ Plugin 'kamykn/spelunker.vim'
 
 Plugin 'https://github.com/scrooloose/nerdtree.git'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-"Plugin 'weynhamz/vim-plugin-minibufexpl'
 Plugin 'jlanzarotta/bufexplorer' 
 Plugin 'tpope/vim-fugitive.git' 
 
@@ -19,13 +18,10 @@ Plugin 'leafgarland/typescript-vim.git'
 Plugin 'peitalin/vim-jsx-typescript'
 Plugin 'arithran/vim-delete-hidden-buffers'
 Plugin 'Quramy/tsuquyomi'
-Plugin 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+Plugin 'lifepillar/vim-mucomplete' 
 Plugin 'vim-syntastic/syntastic'
 Plugin 'jason0x43/vim-js-indent' 
 Plugin 'nathanaelkane/vim-indent-guides'
-"Plugin 'mxw/vim-jsx'
-"Plugin 'pangloss/vim-javascript'
-"Plugin 'othree/jspc.vim'
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
 call vundle#end()            " required
@@ -68,22 +64,6 @@ command! -bang -nargs=* CC call <SID>close_nerd_and_search_with_selection(<q-arg
 command! -bang -nargs=* P call fzf#vim#files('', fzf#vim#with_preview('up'), <bang>)
 
 
-
-
-"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%--- code completion ---%%%%%%%%%%%%%%%%%%%%
-
-if !exists("g:ycm_semantic_triggers")
-  let g:ycm_semantic_triggers = {}
-   endif
-    let g:ycm_semantic_triggers['typescript'] = ['.']
-let g:tsuquyomi_javascript_support = 1 
-"set omnifunc=syntaxcomplete#Complete
-
-
-autocmd FileType typescript setlocal completeopt-=menu
-
-" remove preview window
-set completeopt-=preview
 
 
 
@@ -208,8 +188,13 @@ let g:tsuquyomi_javascript_support = 1
 let g:tsuquyomi_auto_open = 1
 let g:tsuquyomi_completion_detail = 1 
 let g:tsuquyomi_disable_quickfix = 1
- 
+"
 
+"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---  completion  ---%%%%%%%%%%%%%%%%%%%%
+
+  set completeopt+=menuone
+    set completeopt+=noselect 
+    let g:mucomplete#enable_auto_at_startup = 1 
 
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---  key mappings  ---%%%%%%%%%%%%%%%%%%%%
 
