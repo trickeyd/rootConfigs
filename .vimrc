@@ -145,7 +145,10 @@ hi matchparen cterm=underline ctermbg=black ctermfg=red
 hi SpelunkerSpellBad cterm=underline ctermfg=none gui=underline guifg=#9e9e9e
 hi SpelunkerComplexOrCompoundWord cterm=underline ctermfg=none gui=underline guifg=NONE 
 
-set statusline=2
+set laststatus=2
+set statusline=%{expand('%:t')}%=%4l/%3v\  
+
+let NERDTreeQuitOnOpen=1 
 
 " MiniBufExpl Colors
 "hi MBENormal               guifg=#808080 ctermfg=218
@@ -186,10 +189,6 @@ highlight CCSpellBad cterm=underline
 "let g:miniBufExplMapCTabSwitchBufs = 1
 "let g:miniBufExplModSelTarget = 1 
 
-let g:tsuquyomi_javascript_support = 1
-let g:tsuquyomi_auto_open = 1
-let g:tsuquyomi_completion_detail = 1 
-let g:tsuquyomi_disable_quickfix = 1
 "
 
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---  completion  ---%%%%%%%%%%%%%%%%%%%%
@@ -198,8 +197,13 @@ set completeopt+=menuone
 set completeopt+=noselect 
 let g:mucomplete#enable_auto_at_startup = 1 
 set belloff+=ctrlg " If Vim beeps during completion 
-inoremap <C-\> MUcompleteFwd
-inoremap <C-'> MUcompleteBwd
+imap <unique> œ <plug>(MUcompleteFwd)  
+imap <unique> ∑ <plug>(MUcompleteBwd)  
+let g:tsuquyomi_javascript_support = 1
+let g:tsuquyomi_auto_open = 1
+ 
+let g:tsuquyomi_disable_quickfix = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi'] 
 
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---  key mappings  ---%%%%%%%%%%%%%%%%%%%%
 
@@ -338,3 +342,5 @@ set undodir=.undo/,~/.undo/,/tmp//
 noremap gi :TsuImport<CR>
 noremap <C-z> <S-z> 
 
+noremap ® :TsuRenameSymbol<CR>
+inoremap ® <esc>:TsuRenameSymbol<CR>
