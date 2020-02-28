@@ -9,10 +9,12 @@ Plugin 'VundleVim/Vundle.vim'
 "Spelling
 Plugin 'kamykn/spelunker.vim'
 
+
 Plugin 'https://github.com/scrooloose/nerdtree.git'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'jlanzarotta/bufexplorer' 
 Plugin 'tpope/vim-fugitive.git' 
+Plugin 'dense-analysis/ale'
 
 Plugin 'leafgarland/typescript-vim.git'
 Plugin 'peitalin/vim-jsx-typescript'
@@ -64,14 +66,10 @@ command! -bang -nargs=* CC call <SID>close_nerd_and_search_with_selection(<q-arg
 command! -bang -nargs=* P call fzf#vim#files('', fzf#vim#with_preview('up'), <bang>)
 
 
-
-
-
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---    syntax      ---%%%%%%%%%%%%%%%%%%%%
 
 set number
 autocmd BufNewFile,BufRead *.ts,*.tsx,*.jsx,*.js set filetype=typescript.tsx
-
 
 set nowrap
 set textwidth=0 
@@ -98,6 +96,15 @@ augroup END
 
 let g:typescript_indent_disable = 1 
 set backspace=indent,eol,start 
+
+let g:ale_fixers = {'javascript': ['prettier', 'eslint']}
+let g:ale_linters_ignore = ['tsserver'] 
+" Or in ~/.vim/vimrc:
+let g:ale_linters = {
+\   'javascript': ['flow-language-server', 'eslint', 'flow' ],
+\}
+
+let g:ale_fix_on_save = 1
 
 
 
@@ -189,31 +196,41 @@ highlight CCSpellBad cterm=underline
 "let g:miniBufExplMapCTabSwitchBufs = 1
 "let g:miniBufExplModSelTarget = 1 
 
-"
+"use locally installed flow
+let local_flow = finddir('node_modules', '.;') . '/.bin/flow'
+if matchstr(local_flow, "^\/\\w") == ''
+  let local_flow= getcwd() . "/" . local_flow
+endif
+if executable(local_flow)
+  let g:flow#flowpath = local_flow
+endif
 
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---  completion  ---%%%%%%%%%%%%%%%%%%%%
 
-set completeopt+=menuone
-set completeopt+=noselect 
-let g:mucomplete#enable_auto_at_startup = 1 
-set belloff+=ctrlg " If Vim beeps during completion 
-imap <unique> œ <plug>(MUcompleteFwd)  
-imap <unique> ∑ <plug>(MUcompleteBwd)  
 let g:tsuquyomi_javascript_support = 1
 let g:tsuquyomi_auto_open = 1
  
 let g:tsuquyomi_disable_quickfix = 1
 let g:syntastic_typescript_checkers = ['tsuquyomi'] 
+ 
+set completeopt-=preview
+set completeopt+=longest,menuone,noselect 
+let g:mucomplete#enable_auto_at_startup = 1 
+let g:tsuquyomi_completion_preview = 1 
+set belloff+=ctrlg " If Vim beeps during completion 
+"imap <unique> œ <plug>(MUcompleteFwd)  
+"imap <unique> ∑ <plug>(MUcompleteBwd)  
 
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---  key mappings  ---%%%%%%%%%%%%%%%%%%%%
-
+" stop MU clash
+imap <unique> <C-8> <plug>(MUcompleteBwd)
 " map fzf
 nnoremap <C-P> :NERDTreeClose<bar>:FF<CR>
 inoremap <C-P> :NERDTreeClose<bar><Esc>:FF<CR>
 vnoremap <C-P> <Esc>:CC<CR>
 
 
-nnoremap `` :NERDTreeClose<bar>:P<CR>
+nnoremap `` <esc>:NERDTreeClose<bar>:P<CR>
 
 " move between tabs
 "nnoremap = :bn<cr>
