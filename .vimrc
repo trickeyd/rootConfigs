@@ -1,5 +1,3 @@
-filetype off
-
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
@@ -8,7 +6,7 @@ Plugin 'VundleVim/Vundle.vim'
 "
 "Spelling
 Plugin 'kamykn/spelunker.vim'
-
+Plugin 'easymotion/vim-easymotion'
 
 Plugin 'https://github.com/scrooloose/nerdtree.git'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
@@ -18,6 +16,10 @@ Plugin 'dense-analysis/ale'
 
 Plugin 'leafgarland/typescript-vim.git'
 Plugin 'peitalin/vim-jsx-typescript'
+
+Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
+
 Plugin 'arithran/vim-delete-hidden-buffers'
 Plugin 'Quramy/tsuquyomi'
 Plugin 'lifepillar/vim-mucomplete' 
@@ -37,7 +39,7 @@ let g:fzf_layout = { 'down': '~80%' }
 let g:rg_command = '
   \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color=always
   \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,ts,tsx,xml}"
-  \ -g "!{.git,lib,node_modules,*/node_modules,artifacts,vendor}/*" '
+  \ -g "!{.git,lib,node_modules,*/node_modules,artifacts,coverage,,vendor}/*" '
 
 function! s:get_visual_selection()
   " Why is this not a built-in Vim script function?!
@@ -67,19 +69,23 @@ command! -bang -nargs=* P call fzf#vim#files('', fzf#vim#with_preview('up'), <ba
 
 
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---    syntax      ---%%%%%%%%%%%%%%%%%%%%
-
+filetype plugin indent on 
+let g:javascript_plugin_jsdoc = 1 
+let g:javascript_plugin_ngdoc = 1 
+let g:javascript_plugin_flow = 1 
 set number
-autocmd BufNewFile,BufRead *.ts,*.tsx,*.jsx,*.js set filetype=typescript.tsx
-
+"autocmd BufNewFile,BufRead *.ts,*.tsx,*.jsx,*.js set filetype=typescript.tsx
+au BufNewFile,BufRead *.ts,*.tsx set filetype=typescript.tsx
+au FocusGained,BufEnter * :silent! ! 
+au FocusLost,WinLeave * :silent! noautocmd w 
+set autoread
 set nowrap
 set textwidth=0 
 "set smartindent
 "set autoindent
 set cindent
-filetype plugin indent on
 set cinkeys-=0#
 set indentkeys-=0# 
-
 
 hi clear SpellBad
 hi SpellBad cterm=underline
@@ -111,9 +117,9 @@ let g:ale_fix_on_save = 1
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---    skining     ---%%%%%%%%%%%%%%%%%%%%
 set cursorline 
 "set cursorcolumn 
-hi Cursor ctermbg=15 ctermfg=8 
-hi CursorLine cterm=none term=none  ctermbg=234 ctermfg=none 
-hi CursorColumn cterm=none term=none  ctermbg=234 ctermfg=none 
+"hi Cursor ctermbg=15 ctermfg=8 
+"hi CursorLine cterm=none term=none  ctermbg=234 ctermfg=none 
+"hi CursorColumn cterm=none term=none  ctermbg=234 ctermfg=none 
 set lazyredraw
 set ttyfast
 :set cul! 
@@ -166,10 +172,6 @@ let NERDTreeQuitOnOpen=1
 "hi MBEVisibleActiveChanged guifg=#F1266F ctermfg=226
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---     misc.      ---%%%%%%%%%%%%%%%%%%%%
 
-
-filetype plugin indent on 
-filetype plugin on
-filetype indent on
 set mouse=a
 set ttymouse=sgr 
 set showcmd
@@ -178,7 +180,6 @@ set shiftwidth=2
 set expandtab
 set hidden
 set tags=./tags;,tags;
-
 
 " Use CCSpellCheck.vim. (1 / 0) (default 1)
 let g:CCSpellCheckEnable = 1
@@ -208,18 +209,19 @@ endif
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---  completion  ---%%%%%%%%%%%%%%%%%%%%
 
 let g:tsuquyomi_javascript_support = 1
+let g:tsuquyomi_baseurl_import_path = 1 
 let g:tsuquyomi_auto_open = 1
  
 let g:tsuquyomi_disable_quickfix = 1
 let g:syntastic_typescript_checkers = ['tsuquyomi'] 
  
 set completeopt-=preview
-set completeopt+=longest,menuone,noselect 
+set completeopt+=longest,menuone,noselect,noinsert 
 let g:mucomplete#enable_auto_at_startup = 1 
 let g:tsuquyomi_completion_preview = 1 
 set belloff+=ctrlg " If Vim beeps during completion 
-"imap <unique> œ <plug>(MUcompleteFwd)  
-"imap <unique> ∑ <plug>(MUcompleteBwd)  
+"imap qqqqqqqq <plug>(MUcompleteFwd)  
+"imap qqqqqqq <plug>(MUcompleteBwd)  
 
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---  key mappings  ---%%%%%%%%%%%%%%%%%%%%
 " stop MU clash
@@ -260,8 +262,8 @@ set splitright
 nnoremap w- :split<CR>
 nnoremap w_ :vsplit<CR>
 
-nnoremap 9 <C-o>
-nnoremap 0 <C-i>
+nnoremap - <C-o>
+nnoremap + <C-i>
 
 nmap <CR> O<Esc>
 nmap <C-CR> o<Esc>
@@ -345,12 +347,12 @@ xnoremap <space> :noh <CR>
 noremap <space> :noh <CR>
 vnoremap <space> :noh <CR>
 
-inoremap <S-P><S-O><S-I> console.log("
-noremap <S-P><S-O><S-I> iconsole.log("
+inoremap <S-P><S-O><S-I> console.log({})<Esc>hi
+noremap <S-P><S-O><S-I> iconsole.log({})<Esc>hi
 
 noremap gj J
 
-map ggg :IndentGuidesToggle<CR>
+map <C-G><C-G> :IndentGuidesToggle<CR>
 
 set backupdir=.backup/,~/.backup/,/tmp//
 set directory=.swp/,~/.swp/,/tmp//
