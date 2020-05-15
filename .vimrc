@@ -38,8 +38,9 @@ let g:fzf_layout = { 'down': '~80%' }
 
 let g:rg_command = '
   \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color=always
-  \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,ts,tsx,xml}"
-  \ -g "!{.git,lib,node_modules,*/node_modules,artifacts,coverage,,vendor}/*" '
+  \ -g "*.{js,json,php,md,style,jade,html,config,py,cpp,c,go,hs,rb,conf,ts,tsx,xml}"
+  \ -g "!{.git,node_modules,*/node_modules,artifacts,coverage,vendor,lib,*/lib}/*"
+  \ '
 
 function! s:get_visual_selection()
   " Why is this not a built-in Vim script function?!
@@ -163,6 +164,9 @@ set statusline=%{expand('%:t')}%=%4l/%3v\
 
 let NERDTreeQuitOnOpen=1 
 
+" fix shitty color in tmux
+set background=dark 
+
 " MiniBufExpl Colors
 "hi MBENormal               guifg=#808080 ctermfg=218
 "hi MBEChanged              guifg=#CD5907 ctermfg=218
@@ -209,7 +213,7 @@ endif
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---  completion  ---%%%%%%%%%%%%%%%%%%%%
 
 let g:tsuquyomi_javascript_support = 1
-let g:tsuquyomi_baseurl_import_path = 1 
+"let g:tsuquyomi_baseurl_import_path = 1 
 let g:tsuquyomi_auto_open = 1
  
 let g:tsuquyomi_disable_quickfix = 1
