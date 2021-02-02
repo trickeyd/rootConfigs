@@ -60,6 +60,7 @@ export deleteFriends='mongo localhost:27017/james_test ~/projects/smallTalkServe
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/idiosync/.oh-my-zsh"
+
 export MATCH_PASSWORD="GossApp"
 export FASTLANE_USER="james@goss.com"
 export FASTLANE_PASSWORD="d4061791D4."

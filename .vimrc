@@ -8,6 +8,8 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'kamykn/spelunker.vim'
 Plugin 'easymotion/vim-easymotion'
 
+Plugin 'sbdchd/neoformat' 
+
 Plugin 'https://github.com/scrooloose/nerdtree.git'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'jlanzarotta/bufexplorer' 
@@ -79,6 +81,7 @@ set number
 au BufNewFile,BufRead *.ts,*.tsx set filetype=typescript.tsx
 au FocusGained,BufEnter * :silent! ! 
 au FocusLost,WinLeave * :silent! noautocmd w 
+autocmd BufWritePre *.ts,*tsx Neoformat
 set autoread
 set nowrap
 set textwidth=0 
@@ -217,7 +220,7 @@ let g:tsuquyomi_javascript_support = 1
 let g:tsuquyomi_single_quote_import = 1
 let g:tsuquyomi_auto_open = 1
  
-let g:tsuquyomi_disable_quickfix = 1
+let g:tsuquyomi_disable_quickfix =0 
 let g:syntastic_typescript_checkers = ['tsuquyomi'] 
  
 set completeopt-=preview
