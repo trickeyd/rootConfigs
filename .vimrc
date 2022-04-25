@@ -371,3 +371,8 @@ noremap <C-z> <S-z>
 
 noremap ® :TsuRenameSymbol<CR>
 inoremap ® <esc>:TsuRenameSymbol<CR>
+
+augroup quickfix
+    autocmd!
+    autocmd FileType qf setlocal wrap
+augroup END 
